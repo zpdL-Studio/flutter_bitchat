@@ -23,6 +23,7 @@ allprojects {
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
+apply plugin: "kotlin-parcelize"
 
 android {
     namespace = "zpdl.studio.flutter_bitchat"
@@ -63,4 +64,10 @@ android {
             }
         }
     }
+}
+
+dependencies {
+    implementation("androidx.security:security-crypto:1.1.0-beta01")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("com.google.crypto.tink:tink-android:1.10.0")
 }
