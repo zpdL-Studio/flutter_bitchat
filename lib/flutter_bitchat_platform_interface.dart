@@ -1,3 +1,4 @@
+import 'package:flutter_bitchat/data/flutter_bitchat_permission_status.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'flutter_bitchat_method_channel.dart';
@@ -23,7 +24,11 @@ abstract class FlutterBitchatPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<FlutterBitchatPermissionStatus> getPermissionStatus() {
+    throw UnimplementedError('getPermissionStatus() has not been implemented.');
+  }
+
+  Future<bool> requestPermission() {
+    throw UnimplementedError('requestPermission() has not been implemented.');
   }
 }

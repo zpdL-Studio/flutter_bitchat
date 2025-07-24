@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bitchat/data/flutter_bitchat_permission_status.dart';
 
 import 'flutter_bitchat_platform_interface.dart';
 
@@ -10,8 +11,20 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
   final methodChannel = const MethodChannel('flutter_bitchat');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<FlutterBitchatPermissionStatus> getPermissionStatus() async {
+    final status = await methodChannel.invokeMethod<Map>(
+        'FlutterBitchat@getPermissionStatus');
+    return FlutterBitchatPermissionStatus(
+      hasBluetoothPermission: status?['hasBluetoothPermission'] ?? false,
+      hasLocationPermission: status?['hasLocationPermission'] ?? false,
+      hasNotificationPermission: status?['hasNotificationPermission'] ?? false,
+    );
+  }
+
+  @override
+  Future<bool> requestPermission() async {
+    final result = await methodChannel.invokeMethod<bool>(
+        'FlutterBitchat@requestPermission');
+    return result == true;
   }
 }
