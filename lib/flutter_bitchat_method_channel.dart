@@ -24,12 +24,16 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
       switch (call.method) {
         case 'FlutterBitchat@didReceiveMessage':
           final arguments = call.arguments;
-          if(arguments is Map) {
+          if (arguments is Map) {
             debugPrint('FlutterBitchat@didReceiveMessage : $arguments');
             try {
-              callHandler.didReceiveMessage(FlutterBitchatMessage.fromJson(arguments));
-            } catch(e) {
-              debugPrint('FlutterBitchat@didReceiveMessage -> arguments: $arguments, e: $e');
+              callHandler.didReceiveMessage(
+                FlutterBitchatMessage.fromJson(arguments),
+              );
+            } catch (e) {
+              debugPrint(
+                'FlutterBitchat@didReceiveMessage -> arguments: $arguments, e: $e',
+              );
             }
           }
           break;
@@ -39,7 +43,9 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
           callHandler.didConnectToPeer(call.arguments['peerID']);
           break;
         case 'FlutterBitchat@didUpdatePeerList':
-          callHandler.didUpdatePeerList((call.arguments as List).map((e) => e as String).toList());
+          callHandler.didUpdatePeerList(
+            (call.arguments as List).map((e) => e as String).toList(),
+          );
           break;
         case 'FlutterBitchat@registerPeerPublicKey':
           callHandler.registerPeerPublicKey(
@@ -76,10 +82,9 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
   @override
   Future<String> myPeerID() async {
     return (await methodChannel.invokeMethod<String>(
-        'FlutterBitchat@myPeerID'))!;
+      'FlutterBitchat@myPeerID',
+    ))!;
   }
-
-
 
   @override
   Future<void> startMeshService() =>
@@ -88,4 +93,15 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
   @override
   Future<void> stopMeshService() =>
       methodChannel.invokeMethod<void>('FlutterBitchat@stopMeshService');
+
+  @override
+  Future<void> sendMessage({
+    required String content,
+    List<String> mentions = const [],
+    String? channel,
+  }) => methodChannel.invokeMethod<void>('FlutterBitchat@sendMessage', {
+    'content': content,
+    'mentions': mentions,
+    'channel': channel,
+  });
 }

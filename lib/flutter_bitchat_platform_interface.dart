@@ -26,7 +26,9 @@ abstract class FlutterBitchatPlatform extends PlatformInterface {
   }
 
   void setMethodCallHandler(FlutterBitchatCallHandler? callHandler) {
-    throw UnimplementedError('setMethodCallHandler() has not been implemented.');
+    throw UnimplementedError(
+      'setMethodCallHandler() has not been implemented.',
+    );
   }
 
   Future<FlutterBitchatPermissionStatus> getPermissionStatus() {
@@ -49,4 +51,13 @@ abstract class FlutterBitchatPlatform extends PlatformInterface {
     throw UnimplementedError('stopMeshService() has not been implemented.');
   }
 
+  Future<void> sendMessage({
+    required String content,
+    List<String> mentions = const [],
+    String? channel,
+  }) {
+    throw UnimplementedError(
+      'sendMessage(content, mentions, channel) has not been implemented.',
+    );
+  }
 }

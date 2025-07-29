@@ -185,6 +185,32 @@ class BitChatModel with $BitChatModel implements FlutterBitchatCallHandler {
       'BitChatModel.registerPeerPublicKey -> peerID: $peerID, fingerprint: $fingerprint,',
     );
   }
+
+  Future<void> onSendMessage(String content) async {
+    if(content.isEmpty) {
+      return;
+    }
+
+    if (content.startsWith("/")) {
+      /// TODO
+      return;
+    }
+
+    final myPeerID = await bitchat.myPeerID();
+    final message = FlutterBitchatMessage(
+      id: Uuid().v4(),
+      sender: nickName ?? myPeerID,
+      content: content,
+      timestamp: DateTime.now(),
+      isRelay: false,
+      senderPeerID: myPeerID,
+      // mentions = if (mentions.isNotEmpty()) mentions else null,
+      // channel = currentChannelValue
+    );
+
+    await bitchat.sendMessage(content: content);
+    messageManager.addMessage(message);
+  }
 }
 
 class BitchatDataManager implements FlutterBitchatDataManager {

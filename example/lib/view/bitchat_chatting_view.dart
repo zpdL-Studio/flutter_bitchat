@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bitchat_example/view/widget/bitchat_chatting_input.dart';
 import 'package:flutter_bitchat_example/view/widget/bitchat_chatting_messages.dart';
 import 'package:flutter_bitchat_example/view/widget/bitchat_chatting_title.dart';
 
@@ -21,6 +22,10 @@ class BitchatChattingView extends StatelessWidget {
                 top: 16,
                 bottom: 80,
               ),
+            ),
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: BitchatChattingInput(),
             ),
           ],
         ),

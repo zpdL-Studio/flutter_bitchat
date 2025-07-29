@@ -35,6 +35,16 @@ class FlutterBitchat {
 
   Future<void> stopMeshService() =>
       FlutterBitchatPlatform.instance.stopMeshService();
+
+  Future<void> sendMessage({
+    required String content,
+    List<String> mentions = const [],
+    String? channel,
+  }) => FlutterBitchatPlatform.instance.sendMessage(
+    content: content,
+    mentions: mentions,
+    channel: channel,
+  );
 }
 
 // class FlutterBitchatBluetoothMeshDelegateEventChannel {

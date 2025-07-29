@@ -113,7 +113,20 @@ class FlutterBitchatPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                         throw PluginException.MeshServiceNotFound("Bluetooth mesh service not found")
                     }
                 }
+                "FlutterBitchat@sendMessage" -> {
+                    val meshService = this.meshService
+                    if (meshService != null) {
+                        val arguments = call.arguments as Map<*, *>
+                        val content = arguments["content"] as String
+                        val mentions = arguments["mentions"] as? List<*>
+                        val channel = arguments["channel"] as? String
 
+                        meshService.sendMessage(content, mentions?.map { it as String } ?: emptyList(), channel)
+                        result.success(true)
+                    } else {
+                        throw PluginException.MeshServiceNotFound("Bluetooth mesh service not found")
+                    }
+                }
                 else -> result.notImplemented()
             }
         } catch (e: Exception) {

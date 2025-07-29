@@ -96,8 +96,8 @@ class BitchatChattingMyMessage extends StatelessWidget {
               color: theme.colorScheme.primary,
               child: Padding(
                 padding: const EdgeInsetsDirectional.only(
-                  start: 24,
-                  end: 16,
+                  start: 16,
+                  end: 24,
                   top: 8,
                   bottom: 8,
                 ),
