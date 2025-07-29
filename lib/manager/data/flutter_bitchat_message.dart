@@ -12,6 +12,7 @@ class FlutterBitchatMessage {
   final bool isPrivate;
   final String? recipientNickname;
   final String? senderPeerID;
+  final int? peerRSSI;
   final List<String>? mentions;
   final String? channel;
   final ByteData? encryptedContent;
@@ -28,6 +29,7 @@ class FlutterBitchatMessage {
     this.isPrivate = false,
     this.recipientNickname,
     this.senderPeerID,
+    this.peerRSSI,
     this.mentions,
     this.channel,
     this.encryptedContent,
@@ -45,6 +47,7 @@ class FlutterBitchatMessage {
       originalSender: json['originalSender'],
       isPrivate: json['isPrivate'],
       recipientNickname: json['recipientNickname'],
+      peerRSSI: json['peerRSSI'],
       senderPeerID: json['senderPeerID'],
       mentions:
           json['mentions'] is List
@@ -59,6 +62,6 @@ class FlutterBitchatMessage {
 
   @override
   String toString() {
-    return 'FlutterBitchatMessage{id: $id, sender: $sender, content: $content, timestamp: $timestamp, isRelay: $isRelay, originalSender: $originalSender, isPrivate: $isPrivate, recipientNickname: $recipientNickname, senderPeerID: $senderPeerID, mentions: $mentions, channel: $channel, encryptedContent: $encryptedContent, isEncrypted: $isEncrypted, deliveryStatus: $deliveryStatus}';
+    return 'FlutterBitchatMessage{id: $id, sender: $sender, content: $content, timestamp: $timestamp, isRelay: $isRelay, originalSender: $originalSender, isPrivate: $isPrivate, recipientNickname: $recipientNickname, senderPeerID: $senderPeerID, peerRSSI: $peerRSSI, mentions: $mentions, channel: $channel, encryptedContent: $encryptedContent, isEncrypted: $isEncrypted, deliveryStatus: $deliveryStatus}';
   }
 }

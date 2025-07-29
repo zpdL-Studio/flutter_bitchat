@@ -10,6 +10,7 @@ class BitchatChattingView extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(title: const BitchatChattingTitle()),
+      backgroundColor: theme.colorScheme.surfaceContainerHigh,
       body: SafeArea(
         child: Stack(
           children: [
@@ -17,6 +18,7 @@ class BitchatChattingView extends StatelessWidget {
               padding: EdgeInsetsDirectional.only(
                 start: 16,
                 end: 16,
+                top: 16,
                 bottom: 80,
               ),
             ),

@@ -108,6 +108,39 @@ class BitChatModel with $BitChatModel implements FlutterBitchatCallHandler {
   }
 
   @override
+  void didReceiveMessage(FlutterBitchatMessage message) {
+    debugPrint('BitChatModel.didReceiveMessage -> message: $message');
+    final messageKey = messageManager.generateMessageKey(message);
+    if (messageManager.isMessageProcessed(messageKey)) {
+      return;
+    }
+    messageManager.markMessageProcessed(messageKey);
+    final senderPeerID = message.senderPeerID;
+    if (senderPeerID != null) {
+      // if (privateChatManager.isPeerBlocked(senderPeerID)) {
+      //   return@launch
+      // }
+    }
+    // // Trigger haptic feedback
+    // onHapticFeedback()
+
+    if(message.isPrivate) {
+      /// TODO
+    } else if(message.channel != null) {
+      /// TODO
+    } else {
+      messageManager.addMessage(message);
+    }
+
+    // Periodic cleanup
+    if (messageManager.isMessageProcessed("cleanup_check_${DateTime
+        .now()
+        .millisecondsSinceEpoch / 30000}")) {
+      messageManager.cleanupDeduplicationCaches();
+    }
+  }
+
+  @override
   Future<String?> getNickname() async {
     return nickName;
   }

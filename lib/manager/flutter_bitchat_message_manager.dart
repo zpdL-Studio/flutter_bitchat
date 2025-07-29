@@ -26,6 +26,12 @@ class FlutterBitchatMessageManager {
     didUpdateMessage([]);
   }
 
+  String generateMessageKey(FlutterBitchatMessage message) {
+    final senderKey = message.senderPeerID ?? message.sender;
+    final contentHash = message.content.hashCode;
+    return '$senderKey-${message.timestamp.millisecondsSinceEpoch}-$contentHash';
+  }
+
   bool isMessageProcessed(String messageKey) {
     return _processedUIMessages.contains(messageKey);
   }

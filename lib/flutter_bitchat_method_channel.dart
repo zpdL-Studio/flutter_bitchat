@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bitchat/data/flutter_bitchat_permission_status.dart';
+import 'package:flutter_bitchat/manager/data/flutter_bitchat_message.dart';
 
 import 'flutter_bitchat_call_handler.dart';
 import 'flutter_bitchat_platform_interface.dart';
@@ -21,6 +22,17 @@ class MethodChannelFlutterBitchat extends FlutterBitchatPlatform {
     }
     methodChannel.setMethodCallHandler((call) async {
       switch (call.method) {
+        case 'FlutterBitchat@didReceiveMessage':
+          final arguments = call.arguments;
+          if(arguments is Map) {
+            debugPrint('FlutterBitchat@didReceiveMessage : $arguments');
+            try {
+              callHandler.didReceiveMessage(FlutterBitchatMessage.fromJson(arguments));
+            } catch(e) {
+              debugPrint('FlutterBitchat@didReceiveMessage -> arguments: $arguments, e: $e');
+            }
+          }
+          break;
         case 'FlutterBitchat@getNickname':
           return await callHandler.getNickname();
         case 'FlutterBitchat@didConnectToPeer':

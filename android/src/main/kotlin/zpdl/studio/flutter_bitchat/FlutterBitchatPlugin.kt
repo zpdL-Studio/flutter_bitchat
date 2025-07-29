@@ -22,6 +22,7 @@ import zpdl.studio.flutter_bitchat.mesh.BluetoothMeshDelegate
 import zpdl.studio.flutter_bitchat.mesh.BluetoothMeshService
 import zpdl.studio.flutter_bitchat.model.BitchatMessage
 import zpdl.studio.flutter_bitchat.model.DeliveryAck
+import zpdl.studio.flutter_bitchat.model.DeliveryStatus
 import zpdl.studio.flutter_bitchat.model.ReadReceipt
 import zpdl.studio.flutter_bitchat.onboarding.PermissionManager
 import zpdl.studio.flutter_bitchat.onboarding.PermissionType
@@ -91,6 +92,7 @@ class FlutterBitchatPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     }
                     result.success(meshService.myPeerID)
                 }
+
                 "FlutterBitchat@startMeshService" -> {
                     val meshService = this.meshService
                     if (meshService != null) {
@@ -216,7 +218,25 @@ class FlutterBitchatPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     override fun didReceiveMessage(message: BitchatMessage) {
         Log.i("FlutterBitchat", "didReceiveMessage -> message: $message")
-        invokeMethod("FlutterBitchat@didReceiveMessage", )
+        val peerID = message.senderPeerID
+        val rssi = peerID?.let { peerID ->
+            val meshService = this.meshService
+            if(meshService != null) {
+                val result = meshService.getPeerRSSI()[peerID]
+                Log.i("FlutterBitchat", "didReceiveMessage -> rssi: $result")
+                return@let result
+            }
+            return@let null
+        }
+
+        val json = mutableMapOf<Any, Any?>().apply {
+            for (e in message.toJson()) {
+                put(e.key, e.value)
+            }
+            put("senderRSSI", rssi ?: -60)
+        }
+
+        invokeMethod("FlutterBitchat@didReceiveMessage", json)
     }
 
     override fun didConnectToPeer(peerID: String) {
@@ -325,4 +345,41 @@ private data class PermissionStatus(
     }
 }
 
+fun BitchatMessage.toJson(): MutableMap<Any, *> {
+    return mutableMapOf(
+        "id" to id,
+        "sender" to sender,
+        "content" to content,
+        "timestamp" to timestamp.time,
+        "isRelay" to isRelay,
+        "originalSender" to originalSender,
+        "isPrivate" to isPrivate,
+        "recipientNickname" to recipientNickname,
+        "senderPeerID" to senderPeerID,
+        "mentions" to mentions,
+        "channel" to channel,
+        "encryptedContent" to encryptedContent,
+        "isEncrypted" to isEncrypted,
+        "deliveryStatus" to deliveryStatus?.toJson(),
+    )
+}
+
+fun DeliveryStatus.toJson(): Map<*, *> {
+    return when (this) {
+        DeliveryStatus.Sending ->
+            mapOf("type" to "Sending")
+
+        DeliveryStatus.Sent -> mapOf("type" to "Sent")
+        is DeliveryStatus.Delivered ->
+            mapOf("type" to "Delivered", "to" to to, "at" to at.time)
+
+        is DeliveryStatus.Read -> mapOf("type" to "Read", "by" to by, "at" to at.time)
+        is DeliveryStatus.Failed -> mapOf("type" to "Failed", "reason" to reason)
+        is DeliveryStatus.PartiallyDelivered -> mapOf(
+            "type" to "PartiallyDelivered",
+            "reached" to reached,
+            "total" to total
+        )
+    }
+}
 
