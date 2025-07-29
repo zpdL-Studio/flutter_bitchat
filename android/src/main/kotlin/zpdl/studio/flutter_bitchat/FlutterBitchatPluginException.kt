@@ -2,6 +2,8 @@ package zpdl.studio.flutter_bitchat
 
 sealed class PluginException(message: String): Exception(message) {
     data class ActivityNotFound(override val message: String): PluginException(message)
+
+    data class MeshServiceNotFound(override val message: String): PluginException(message)
 }
 
 

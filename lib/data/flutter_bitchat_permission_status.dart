@@ -9,6 +9,11 @@ class FlutterBitchatPermissionStatus {
     required this.hasNotificationPermission,
   });
 
+  bool get hasAllPermissions =>
+      hasBluetoothPermission &&
+      hasLocationPermission &&
+      hasNotificationPermission;
+
   @override
   String toString() {
     return 'FlutterBitchatPermissionStatus{hasBluetoothPermission: $hasBluetoothPermission, hasLocationPermission: $hasLocationPermission, hasNotificationPermission: $hasNotificationPermission}';
