@@ -1,11 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bitchat/manager/data/flutter_bitchat_message.dart';
 import 'package:flutter_bitchat_example/main.dart';
-import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:intl/intl.dart';
 
 class BitchatChattingInput extends StatefulWidget {
   const BitchatChattingInput({super.key});
